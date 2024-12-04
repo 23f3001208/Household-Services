@@ -32,8 +32,8 @@ A multi-user application connecting customers, service professionals, and admini
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-link>
-   cd <project-directory>
+   git clone https://github.com/23f3001208/Household-Services.git
+   cd Household-Services
    ```
 2. **Install dependencies:**
    ```bash
