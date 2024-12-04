@@ -4,8 +4,6 @@
 
 A multi-user application connecting customers, service professionals, and administrators to manage household services effectively. Built with Flask, Jinja2, Bootstrap, and SQLite, the app provides role-based functionalities for admins, customers, and service professionals.
 
----
-
 ## Features
 
 ### Admin:
@@ -24,15 +22,11 @@ A multi-user application connecting customers, service professionals, and admini
 - Accept/reject service requests.
 - Manage assigned services and update status.
 
----
-
 ## Technologies Used
 
 - **Backend**: Flask, SQLAlchemy
 - **Frontend**: Jinja2, Bootstrap
 - **Database**: SQLite
-
----
 
 ## Setup Instructions
 
