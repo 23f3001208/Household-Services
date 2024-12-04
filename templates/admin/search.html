@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Services</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <style>
+        .search-form {
+            display: flex;
+            justify-content: flex-start; /* Align items from the start */
+            align-items: center; /* Center align vertically */
+            margin-bottom: 20px;
+        }
+
+        .search-input, .search-dropdown {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .search-dropdown {
+            margin-right: 20px; /* Add space between dropdown and input field */
+            width: 200px; /* Ensure a consistent width */
+        }
+
+        .search-input {
+            width: 500px; /* Set a fixed width for the input */
+        }
+
+        .add-service {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 20px; /* Add a little space to the left of the button */
+            border: none; /* Remove button border */
+            margin-top: -3px; 
+        }
+
+        .add-service:hover {
+            background-color: #314eaf; /* Hover effect for button */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; font-family: Arial, sans-serif;">
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Admin Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/admin" class="nav-links">Home</a>
+            <a href="/admin_search" class="nav-links">Search</a>
+            <a href="/admin_summary" class="nav-links">Summary</a>
+            <a href="/admin_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <h2>Search</h2>
+
+        <!-- Search Form -->
+        <form method="POST" action="/admin_search" class="search-form">
+            <!-- Dropdown for Category -->
+            <select id="search-category" name="category" class="search-dropdown">
+                <option value="customers">Customers</option>
+                <option value="professionals">Professionals</option>
+                <option value="services">Services</option>
+            </select>
+
+            <!-- Search Input -->
+            <input type="text" id="search-query" name="query" placeholder="Enter the Search Query" class="search-input">
+
+            <!-- Search Button -->
+            <button type="submit" class="add-service">Search</button>
+        </form>
+
+        <!-- Search Results Section -->
+        <h2>Search Results</h2>
+        <table>
+            <thead>
+                {% if category == 'customers' %}
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer Name</th>
+                        <th>Address</th>
+                        <th>Pincode</th>
+                    </tr>
+                {% elif category == 'professionals' %}
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Experience (In Yrs)</th>
+                        <th>Service Name</th>
+                    </tr>
+                {% elif category == 'services' %}
+                <tr>
+                    <th>ID</th>
+                    <th>Service Name</th>
+                    <th>Description</th>
+                    <th>Base Price</th>
+                </tr>
+                {% endif %}
+            </thead>
+            <tbody>
+                {% if category == 'customers' %}
+                    {% for customer in search_results %}
+                        <tr>
+                            <td>{{ customer.id }}</td>
+                            <td>{{ customer.full_name }}</td>
+                            <td>{{ customer.address }}</td>
+                            <td>{{ customer.pincode }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No results found.</td>
+                        </tr>
+                    {% endfor %}
+                {% elif category == 'professionals' %}
+                    {% for professional in search_results %}
+                        <tr>
+                            <td>{{ professional.id }}</td>
+                            <td>{{ professional.full_name }}</td>
+                            <td>{{ professional.experience }}</td>
+                            <td>{{ professional.service_name }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No results found.</td>
+                        </tr>
+                    {% endfor %}
+                {% elif category == 'services' %}
+                    {% for service in search_results %}
+                        <tr>
+                            <td>{{ service.id }}</td>
+                            <td>{{ service.name }}</td>
+                            <td>{{ service.description }}</td>
+                            <td>${{ service.base_price }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="4">No results found.</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="4">No results found.</td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

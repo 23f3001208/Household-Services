@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <title>Customer Dashboard</title>
+    <style>
+        .profile {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 20px;
+            border: none;
+            float: right;
+        }
+        .best-cleaning-packages {
+            margin-bottom: 30px;
+        }
+
+        .cleaning-package {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cleaning-package span {
+            font-size: 16px;
+        }
+
+        .cleaning-package button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .cleaning-package button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; font-family: Arial, sans-serif;">
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Customer Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/user/{{ user.id }}" class="nav-links">Home</a>
+            <a href="/user_search/{{ user.id }}" class="nav-links">Search</a>
+            <a href="/user_summary/{{ user.id }}" class="nav-links">Summary</a>
+            <a href="/user_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+
+    <a href="/user_view/{{ user.id }}">
+        <button class="profile">Profile</button>
+    </a>
+
+    <div class="dashboard-container" style="padding: 20px; font-family: Arial, sans-serif;">
+        {% if general %}
+        <h2>Looking For Services?</h2>
+        <div style="overflow-x: auto; white-space: nowrap; margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9;">
+            {% for service in services %}
+            <form method="POST" action="/user/{{ user.id }}" style="display: inline-block; text-align: center; margin: 15px;">
+                <input type="hidden" name="service_id" value="{{ service.id }}">
+                <button type="submit" style="border: none; background: none; cursor: pointer;">
+                    {% if service.name=="AC Repair" %}
+                    <img src="/static/images/ac_repair.png" alt="AC Repair" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% elif service.name=="Plumbing" %}
+                    <img src="/static/images/plumbing.jpg" alt="Plumbing" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% elif service.name=="Electrician" %}
+                    <img src="/static/images/electrician.jpg" alt="Electrician" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% elif service.name=="Cleaning" %}
+                    <img src="/static/images/cleaning.png" alt="Cleaning" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% elif service.name=="Salon" %}
+                    <img src="/static/images/salon.png" alt="Salon" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% else %}
+                    <img src="/static/images/services.jpg" alt="{{ service.name }}" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                    {% endif %}
+                    <p style="margin-top: 10px; font-weight: bold; font-size: 18px;">{{ service.name }}</p>
+                </button>
+            </form>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="best-cleaning-packages">
+            <h2>Best {{ current_service.name }} Packages</h2>
+            {% for professional, professional_rating in professional_list.items() %}
+                <div class="cleaning-package">
+                <span>{{ current_service.id }}. {{ current_service.name }} with Base Price {{ current_service.base_price }}: Experience - {{ professional.experience }} Years, Rating - {{ professional_rating }}</span>
+                <form method="POST" action="{{ url_for('book_service', professional_id=professional.id, service_id=current_service.id, user_id=user.id) }}">
+                    <button type="submit">Book</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <h2>Service History</h2>
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            <thead style="background-color: #f8f9fa; border-bottom: 2px solid #ddd;">
+                <tr>
+                    <th>ID</th>
+                    <th>Service Name</th>
+                    <th>Professional Name</th>
+                    <th>Location</th>
+                    <th>Pincode</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in service_requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.service.name }}</td> <!-- Service name -->
+                    <td>{{ request.professional.full_name }}</td> <!-- Professional name -->
+                    <td>{{ request.customer.address }}</td> <!-- Location (address of the customer) -->
+                    <td>{{ request.customer.pincode }}</td> <!-- Pincode -->
+                    {% if request.status == "Accepted" %}
+                    <td><a href="{{ url_for('close_service', user_id=request.customer.id, professional_id=request.professional.id, service_id=request.service.id) }}" type="button">Close It?</a></td>
+                    {% else %}
+                    <td>{{ request.status }}</td> <!-- Status -->
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

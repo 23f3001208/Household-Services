@@ -1,0 +1,59 @@
+.dashboard-container {
+    width: 800px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+    margin: 50px auto;
+    font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+    color: #1e3a8a;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #1e3a8a;
+    color: white;
+}
+
+.nav-links{
+    text-decoration: none; 
+    font-size: 16px; 
+    color: #ffffff; 
+    padding: 8px 15px; 
+    border-radius: 5px; 
+    background-color: #314eaf;
+}
+
+.add-service {
+    padding: 8px;
+    margin-top: 15px;
+    border-radius: 10px;
+    background-color: #1e3a8a;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    text-align: center;
+    width: auto;
+    margin-left: auto;
+}
+
+.add-service:hover {
+    background-color: #314eaf;
+}

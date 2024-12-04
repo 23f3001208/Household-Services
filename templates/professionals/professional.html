@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <title>Professional Dashboard</title>
+    <style>
+        .profile {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-right: 20px;
+            border: none;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; font-family: Arial, sans-serif;">
+        
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Professional Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/professional/{{ professional.id }}" class="nav-links">Home</a>
+            <a href="/professional_search/{{ professional.id }}" class="nav-links">Search</a>
+            <a href="/professional_summary/{{ professional.id }}" class="nav-links">Summary</a>
+            <a href="/professional_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+
+    <a href="{{ url_for('professional_view', professional_id=professional.id, checked=True) }}">
+        <button class="profile">Profile</button>
+    </a>
+    <div class="dashboard-container">
+        <h2>Current Services</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Location</th>
+                    <th>Pin Code</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in current_requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.customer.full_name }}</td>
+                    <td>{{ request.customer.address }}</td> 
+                    <td>{{ request.customer.pincode }}</td>
+                    {% if request.status=="Requested" %}
+                    <td>
+                        <a href="/accept_request/{{ professional.id }}/{{ request.id }}" type="button">Accept</a>
+                        <a href="/accept_request/{{ professional.id }}/{{ request.id }}" type="button">Reject</a>
+                    </td>
+                    {% else %}
+                    <td>{{ request.status }}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <h2>Closed Services</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer Name</th>
+                    <th>Location</th>
+                    <th>Pin Code</th>
+                    <th>Date</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in closed_requests %}
+                <tr>
+                    <td>{{ request.id }}</td>
+                    <td>{{ request.customer.full_name }}</td>
+                    <td>{{ request.customer.address }}</td> 
+                    <td>{{ request.customer.pincode }}</td>
+                    <td>{{ request.date_completed }}</td>
+                    <td>{{ request.rating }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

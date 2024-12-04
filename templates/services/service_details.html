@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <title>Service Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Admin Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/admin" class="nav-links">Home</a>
+            <a href="/admin_search" class="nav-links">Search</a>
+            <a href="/admin_summary" class="nav-links">Summary</a>
+            <a href="/admin_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+    <div class="service-details-container" style="margin: 20px auto; width: 90%; padding: 20px; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);">
+        <h2>Service Details</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Service ID</td>
+                    <td>{{ service.id }}</td>
+                </tr>
+                <tr>
+                    <td>Service Name</td>
+                    <td>{{ service.name }}</td>
+                </tr>
+                <tr>
+                    <td>Description</td>
+                    <td>{{ service.description }}</td>
+                </tr>
+                <tr>
+                    <td>Base Price</td>
+                    <td>${{ service.base_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+        <a href="/admin">
+            <button style="margin-top: 20px; padding: 10px 20px; background-color: #28a745; border: none; color: white; cursor: pointer; border-radius: 5px;">Back to Home</button>
+        </a>
+    </div>
+</body>
+</html>

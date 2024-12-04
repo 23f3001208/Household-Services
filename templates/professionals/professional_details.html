@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <title>Professional Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+        td:first-child {
+            font-weight: bold;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            border: none;
+            color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .edit-button {
+            background-color: #007bff;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 14px;
+            padding: 10px 15px;
+        }
+    </style>
+</head>
+<body>
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Professional Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/professional/{{ professional.id }}" class="nav-links">Home</a>
+            <a href="/professional_search/{{ professional.id }}" class="nav-links">Search</a>
+            <a href="/professional_summary/{{ professional.id }}" class="nav-links">Summary</a>
+            <a href="/professional_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+
+    <div class="professional-details-container" style="margin: 20px auto; width: 90%; padding: 20px; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); position: relative;">
+        <h2>Professional Details</h2>
+        <table>
+            <tbody>
+                <tr>
+                    <td>Professional ID</td>
+                    <td>{{ professional.id }}</td>
+                </tr>
+                <tr>
+                    <td>Username</td>
+                    <td>{{ professional.username }}</td>
+                </tr>
+                <tr>
+                    <td>Full Name</td>
+                    <td>{{ professional.full_name }}</td>
+                </tr>
+                <tr>
+                    <td>Service Name</td>
+                    <td>{{ professional.service_name }}</td>
+                </tr>
+                <tr>
+                    <td>Experience (years)</td>
+                    <td>{{ professional.experience }}</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>{{ professional.address }}</td>
+                </tr>
+                <tr>
+                    <td>Pincode</td>
+                    <td>{{ professional.pincode }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ professional.status }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Edit Button only visible if checked is true -->
+        {% if checked %}
+            <a href="/professional_edit/{{ professional.id }}">
+                <button class="edit-button">Edit</button>
+            </a>
+        {% endif %}
+
+        <a href="{% if checked %}/professional/{{ professional.id }}{% else %}/admin{% endif %}">
+            <button style="margin-top: 20px;">Back to Home</button>
+        </a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Professional</title>
+    <style>
+        .form-container {
+            width: 400px; 
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 20px; 
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); 
+            margin: 50px auto; 
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-container input, 
+        .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 10px; 
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .button-container .button-link {
+            width: 50%;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .button-container button, a {
+            width: 50%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #314eaf;
+        }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center; font-family: Arial, sans-serif;">Edit Professional Information</h1>
+    <div class="form-container">
+        <form action="/professional_edit/{{ professional.id }}" method="POST" id="edit-professional">
+            <!-- Prefill the fields with current professional data -->
+            <label>Email ID (Username)</label>
+            <input type="email" id="email" name="email" value="{{ professional.username }}" placeholder="Enter your Email ID" readonly required>
+            
+            <label>Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+            
+            <label>Full Name</label>
+            <input type="text" id="full_name" name="full_name" value="{{ professional.full_name }}" placeholder="Enter your Name" required>
+            
+            <!-- Service Name as a dropdown -->
+            <label>Service Name</label>
+            <select id="service_name" name="service_name" required>
+                {% for service in services %}
+                <option value="{{ service }}" {% if service == professional.service_name %} selected {% endif %}>{{ service }}</option>
+                {% endfor %}
+            </select>
+
+            <label>Experience (in yrs)</label>
+            <input type="number" id="experience" name="experience" value="{{ professional.experience }}" placeholder="Enter your Experience Years" required>
+
+            <label>Identity Documents (PDF)</label>
+            <input type="file" id="documents" name="documents" accept=".pdf">
+            
+            <label>Address</label>
+            <input type="text" id="address" name="address" value="{{ professional.address }}" placeholder="Enter your Address" required>
+            
+            <label>Pin Code</label>
+            <input type="number" id="pincode" name="pincode" value="{{ professional.pincode }}" placeholder="Enter your Pin Code" required>
+
+            <div class="button-container">
+                <button type="submit">Update</button>
+                <a href="{{ url_for('professional_view', professional_id=professional.id, checked=True) }}" class="button-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

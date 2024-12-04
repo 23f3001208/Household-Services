@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Services</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <style>
+        .search-form {
+            display: flex;
+            justify-content: flex-start; /* Align items from the start */
+            align-items: center; /* Center align vertically */
+            margin-bottom: 20px;
+        }
+
+        .search-input, .search-dropdown {
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .search-dropdown {
+            margin-right: 20px; /* Add space between dropdown and input field */
+            width: 200px; /* Ensure a consistent width */
+        }
+
+        .search-input {
+            width: 500px; /* Set a fixed width for the input */
+        }
+
+        .add-service {
+            padding: 10px 20px;
+            border-radius: 10px;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 20px; /* Add a little space to the left of the button */
+            border: none; /* Remove button border */
+            margin-top: -3px; 
+        }
+
+        .add-service:hover {
+            background-color: #314eaf; /* Hover effect for button */
+        }
+
+        
+        .best-cleaning-packages {
+            margin-bottom: 30px;
+        }
+
+        .cleaning-package {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .cleaning-package span {
+            font-size: 16px;
+        }
+
+        .cleaning-package button {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        .cleaning-package button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav style="background-color: #1e3a8a; padding: 15px; border-radius: 10px; margin: 20px auto; width: 95%; box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1); display: flex; justify-content: space-between; align-items: center; font-family: Arial, sans-serif;">
+        <div style="font-size: 22px; font-weight: bold; color: #fff;">Welcome to the Admin Page</div>
+        <div style="display: flex; gap: 20px;">
+            <a href="/user/{{ user.id }}" class="nav-links">Home</a>
+            <a href="/user_search/{{ user.id }}" class="nav-links">Search</a>
+            <a href="/user_summary/{{ user.id }}" class="nav-links">Summary</a>
+            <a href="/user_logout" class="nav-links" style="background-color: #dc3545;">Logout</a>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-container">
+        <h2>Search</h2>
+
+        <!-- Search Form -->
+        <form method="POST" action="/user_search/{{ user.id }}" class="search-form">
+            <!-- Dropdown for Category -->
+            <select id="search-category" name="category" class="search-dropdown">
+                <option value="services">Service Name</option>
+            </select>
+
+            <!-- Search Input -->
+            <input type="text" id="search-query" name="query" placeholder="Enter the Search Query" class="search-input">
+
+            <!-- Search Button -->
+            <button type="submit" class="add-service">Search</button>
+        </form>
+
+        <!-- Search Results Section -->
+        <div class="best-cleaning-packages">
+            {% if checked %}
+                <h2>Best {{ current_service.name }} Packages</h2>
+                {% for professional, professional_rating in professional_list.items() %}
+                    <div class="cleaning-package">
+                        <span>{{ current_service.id }}. {{ current_service.name }} with Base Price {{ current_service.base_price }}: Experience - {{ professional.experience }} Years, Rating - {{ professional_rating }}</span>
+                        <form method="POST" action="{{ url_for('book_service', professional_id=professional.id, service_id=current_service.id, user_id=user.id) }}">
+                            <button type="submit">Book</button>
+                        </form>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h2>Best Packages</h2>
+                <table>
+                    <tr>
+                        <td colspan="4">No available professionals</td>
+                    </tr>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

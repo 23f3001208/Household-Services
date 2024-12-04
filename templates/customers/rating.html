@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Remarks</title>
+    <link rel="stylesheet" href="/static/styles/main.css">
+    <style>
+        .rate {
+            float: left;
+            height: 46px;
+            padding: 0 10px;
+        }
+
+        .rate:not(:checked) > input {
+            position: absolute;
+            top: -9999px;
+        }
+
+        .rate:not(:checked) > label {
+            float: right; /* Keep stars aligned from left to right */
+            width: 1em;
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            font-size: 30px;
+            color: #ccc; /* Default star color */
+        }
+
+        .rate:not(:checked) > label:before {
+            content: '★ '; /* Star character */
+        }
+
+        .rate > input:checked ~ label {
+            color: #ffc700; /* Color for selected stars */
+        }
+
+        .rate:not(:checked) > label:hover,
+        .rate:not(:checked) > label:hover ~ label {
+            color: #deb217; /* Color on hover */
+        }
+
+        .rate > input:checked + label:hover,
+        .rate > input:checked + label:hover ~ label,
+        .rate > input:checked ~ label:hover,
+        .rate > input:checked ~ label:hover ~ label,
+        .rate > label:hover ~ input:checked ~ label {
+            color: #c59b08; /* Color when hovered over checked stars */
+        }
+
+        /* Container Styles */
+        .remarks-container {
+            width: 600px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 20px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        .remarks-container h2 {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #1e3a8a;
+        }
+        
+
+        .remarks-container .row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .remarks-container .placeholder-box {
+            flex: 1;
+            margin: 0 5px;
+            padding: 10px;
+            background-color: #ffd9d9;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .remarks-container .textarea-remarks {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            box-sizing: border-box;
+            margin: 10px 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button-container .button-link {
+            width: 48%;
+            text-decoration: none;
+        }
+
+        .button-container button, a{
+            width: 48%;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            background-color: #1e3a8a;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button-container button:hover {
+            background-color: #314eaf;
+        }
+    </style>
+</head>
+<body>
+    <div class="remarks-container">
+        <h2>Service Remarks</h2>
+        <h2>Request ID: {{ request.id }}</h2>
+        
+        <!-- Service Information Rows -->
+        <div class="row">
+            <div class="placeholder-box">{{ requests.service.name }}</div>
+            <div class="placeholder-box">{{ requests.service.description }}</div>
+            <div class="placeholder-box">{{ requests.date_requested.strftime('%d/%m/%Y') }}</div>
+        </div>
+        <div class="row">
+            <div class="placeholder-box">{{ requests.professional.id }}</div>
+            <div class="placeholder-box">{{ requests.professional.full_name }}</div>
+            <div class="placeholder-box">{{ requests.professional.address }}</div>
+        </div>
+        <br>
+        <form action="/submit-remarks/{{ user_id }}/{{ professional_id }}/{{ service_id }}" method="POST"> 
+            <!-- Service Rating Section -->
+            <label for="service-rating" style="font-weight: bold; font-size: 18px; color: #1e3a8a; display: block; margin-bottom: 10px; text-align: left;">Service Rating:</label>
+            <div class="rate">
+                <input type="radio" id="star5" name="rate" value="5" />
+                <label for="star5" title="text">5 stars</label>
+                <input type="radio" id="star4" name="rate" value="4" />
+                <label for="star4" title="text">4 stars</label>
+                <input type="radio" id="star3" name="rate" value="3" />
+                <label for="star3" title="text">3 stars</label>
+                <input type="radio" id="star2" name="rate" value="2" />
+                <label for="star2" title="text">2 stars</label>
+                <input type="radio" id="star1" name="rate" value="1" />
+                <label for="star1" title="text">1 star</label>
+            </div>
+            <br><br><br>
+            <!-- Remarks Section -->
+            <label for="remarks" style="font-weight: bold; font-size: 18px; color: #1e3a8a; display: block; text-align: left;">Remarks (if any):</label>
+            <textarea id="remarks" name="remarks" class="textarea-remarks" placeholder="Enter Your Remarks Here"></textarea>
+
+            <div class="button-container">
+                <button type="submit" class="button-link">Submit</button>
+                <a href="/" class="button-link">Cancel</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
